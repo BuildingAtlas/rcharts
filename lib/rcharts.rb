@@ -4,5 +4,8 @@ require 'rcharts/version'
 require 'rcharts/engine'
 
 module RCharts
-  # Your code goes here...
+  extend ActiveSupport::Autoload
+
+  autoload :Percentage
+  autoload :Type
 end

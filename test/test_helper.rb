@@ -15,3 +15,13 @@ if ActiveSupport::TestCase.respond_to?(:fixture_paths=)
   ActiveSupport::TestCase.file_fixture_path = "#{File.expand_path('fixtures', __dir__)}/files"
   ActiveSupport::TestCase.fixtures :all
 end
+
+module ActionView
+  class TestCase
+    private
+
+    def render_erb(template, **)
+      ERB.new(template).result_with_hash(**)
+    end
+  end
+end

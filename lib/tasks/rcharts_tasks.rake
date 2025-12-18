@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# desc "Explaining what the task does"
-# task :rcharts do
-#   # Task goes here
-# end
+desc 'Copy over the stylesheet'
+task 'rcharts:install' => :environment do
+  Rails::Command.invoke :generate, ['rcharts:install']
+end

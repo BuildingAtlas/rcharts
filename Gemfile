@@ -9,9 +9,13 @@ gem 'puma'
 
 gem 'sqlite3'
 
+gem 'importmap-rails'
 gem 'propshaft'
 
 gem 'hotwire-spark'
+gem 'turbo-rails'
+
+gem 'web-console', group: :development
 
 # Opinionated Ruby styling [https://rubocop.org]
 gem 'rubocop'

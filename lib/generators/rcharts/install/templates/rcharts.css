@@ -1,0 +1,389 @@
+@charset "UTF-8";
+
+:where(.rcharts-chart) {
+  --red: #F44336;
+  --blue: #2196F3;
+  --green: #4CAF50;
+  --orange: #FF9800;
+  --purple: #9C27B0;
+
+  --base: #FFFFFF;
+  --base-2: #FAFAFA;
+  --base-3: #E0E0E0;
+  --foreground: #212121;
+
+  --gutter: 0.5rem;
+
+  --transition: all 0.125s ease-in-out;
+  --series-transition-duration: 0.5s;
+
+  --tooltip-border: 1px solid var(--base-3);
+  --tooltip-radius: 0.25rem;
+  --tooltip-shadow: 0 0 0.25rem var(--base-3);
+
+  --font-family: system-ui, sans-serif;
+}
+
+.rcharts-chart {
+  font-family: var(--font-family), sans-serif;
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: stretch;
+
+  svg {
+    position: relative;
+    display: block;
+    vertical-align: middle;
+    min-width: 0;
+  }
+
+  .series-path {
+    &.red {
+      stroke: var(--red);
+    }
+
+    &.blue {
+      stroke: var(--blue);
+    }
+
+    &.green {
+      stroke: var(--green);
+    }
+
+    &.orange {
+      stroke: var(--orange);
+    }
+
+    &.purple {
+      stroke: var(--purple);
+    }
+  }
+
+  .series-shape {
+    &.red {
+      fill: var(--red);
+    }
+
+    &.blue {
+      fill: var(--blue);
+    }
+
+    &.green {
+      fill: var(--green);
+    }
+
+    &.orange {
+      fill: var(--orange);
+    }
+
+    &.purple {
+      fill: var(--purple);
+    }
+  }
+
+  .series-symbol {
+    font-family: sans-serif;
+
+    &.red {
+      color: var(--red);
+    }
+
+    &.blue {
+      color: var(--blue);
+    }
+
+    &.green {
+      color: var(--green);
+    }
+
+    &.orange {
+      color: var(--orange);
+    }
+
+    &.purple {
+      color: var(--purple);
+    }
+  }
+
+  .axis {
+    font-size: small;
+    overflow: visible;
+    display: grid;
+    gap: var(--gutter);
+
+    .axis-ticks {
+      overflow: visible;
+      transition: var(--transition);
+
+      .axis-tick {
+        overflow: visible;
+
+        .axis-tick-text {
+          fill: var(--foreground);
+          transition: var(--transition);
+
+          &[data-inline-axis='x'] {
+            dominant-baseline: hanging;
+            text-anchor: middle;
+          }
+
+          &[data-inline-axis='y'] {
+            dominant-baseline: middle;
+
+            &[data-inline-axis-index='0'] {
+              text-anchor: end;
+            }
+
+            &[data-inline-axis-index='1'] {
+              text-anchor: start;
+            }
+          }
+        }
+      }
+    }
+
+    &[data-name='x'] {
+      grid-column: 1;
+      container-type: inline-size;
+
+      .axis-ticks {
+        width: 100%;
+        height: 1lh;
+      }
+
+      &[data-index='0'] {
+        grid-row-start: 2;
+        padding-block-start: var(--gutter);
+      }
+
+      &[data-index='1'] {
+        grid-row-end: 1;
+        padding-block-end: var(--gutter);
+
+        .axis-ticks {
+          grid-row-start: 1;
+        }
+
+        .axis-label {
+          grid-row-end: 1;
+        }
+      }
+
+    }
+
+    .axis-label-text {
+      fill: var(--foreground);
+      dominant-baseline: middle;
+      text-anchor: middle;
+    }
+
+    &[data-name='y'] {
+      grid-row: 1;
+
+      > * {
+        grid-row: 1;
+      }
+
+      &[data-index='0'] {
+        grid-column-end: 1;
+        padding-inline-end: var(--gutter);
+
+        > .axis-ticks {
+          grid-column-start: 1;
+        }
+
+        > .axis-label {
+          grid-column-end: 1;
+
+          .axis-label-text {
+            rotate: -90deg;
+          }
+        }
+      }
+
+      &[data-index='1'] {
+        grid-column-start: -1;
+        padding-inline-start: var(--gutter);
+
+        > .axis-ticks {
+          grid-column-end: 1;
+        }
+
+        > .axis-label {
+          grid-column-start: 1;
+
+          .axis-label-text {
+            rotate: 90deg;
+          }
+        }
+      }
+    }
+
+  }
+
+  .grid {
+    grid-area: 1 / 1;
+    overflow: visible;
+
+    .grid-rule-container {
+      overflow: visible;
+
+      .grid-rule {
+        stroke-width: 1;
+        stroke: var(--base-3);
+        transition: var(--transition);
+        transition-duration: var(--series-transition-duration);
+
+        &.emphasis {
+          stroke: var(--foreground);
+        }
+      }
+    }
+  }
+
+  .legend {
+    font-size: small;
+    grid-column: 1;
+    display: flex;
+    flex-wrap: wrap;
+    place-content: center;
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+
+    .legend-item {
+      display: inline;
+      white-space: nowrap;
+    }
+
+    &[data-placement='top'], &[data-placement='bottom'] {
+      grid-column: 1;
+      flex-direction: row;
+    }
+
+    &[data-placement='top'] {
+      grid-row-end: -2;
+      padding-block-end: var(--gutter);
+    }
+
+    &[data-placement='bottom'] {
+      grid-row-start: 3;
+      padding-block-start: var(--gutter);
+    }
+
+    &[data-placement='left'], &[data-placement='right'] {
+      grid-row: 1;
+      flex-direction: column;
+    }
+
+    &[data-placement='left'] {
+      grid-column-end: -4;
+      grid-column-start: span 1;
+      padding-inline-end: var(--gutter);
+    }
+
+    &[data-placement='right'] {
+      grid-column-start: 3;
+      padding-inline-start: var(--gutter);
+    }
+
+  }
+
+  .series-container {
+    overflow: visible;
+    grid-column: 1;
+    grid-row: 1;
+
+    .series {
+      overflow: visible;
+
+      .series-path {
+        fill: none;
+        vector-effect: non-scaling-stroke;
+      }
+    }
+
+    .series-path, .series-shape {
+      transition: var(--transition);
+      transition-duration: var(--series-transition-duration);
+    }
+
+    .series-path {
+      stroke-width: 3.5pt;
+
+      &:is(path) {
+        stroke-linecap: square;
+      }
+    }
+  }
+
+  .category-container {
+    grid-column-start: 1;
+    grid-row: 1;
+
+    .series-shape {
+      transition: var(--transition);
+      transition-duration: var(--series-transition-duration);
+    }
+  }
+
+  .tooltips {
+    overflow: visible;
+    grid-column: 1;
+    grid-row: 1;
+
+    .tooltip {
+      .tooltip-hover-target {
+        fill: transparent;
+      }
+
+      .tooltip-marker {
+        stroke-dasharray: 4;
+        stroke: var(--base-3);
+        opacity: 0;
+
+        .tooltip:hover & {
+          opacity: 1;
+        }
+      }
+
+      .tooltip-object {
+        pointer-events: none;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+
+        &:has(.anchor-end) {
+          align-content: end;
+        }
+      }
+
+      .tooltip-container {
+        padding: 1rem;
+        display: flex;
+        flex-direction: row;
+
+        &.justify-end {
+          justify-items: end;
+          justify-content: end;
+        }
+      }
+
+      .tooltip-content {
+        opacity: 0;
+        background: var(--base);
+        border: var(--tooltip-border);
+        border-radius: var(--tooltip-radius);
+        font: var(--foreground);
+        box-shadow: var(--tooltip-shadow);
+        clip-path: inset(0 round var(--tooltip-radius));
+
+        .tooltip:hover & {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

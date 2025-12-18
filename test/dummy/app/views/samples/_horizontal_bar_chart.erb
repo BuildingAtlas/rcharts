@@ -1,0 +1,44 @@
+<%= graph_for graphable,
+              axis_options: { x: { minimum: local_assigns[:minimum], stacked: local_assigns[:stacked],
+                                   values_method: :values },
+                              y: { values_method: :keys } } do |graph| %>
+  <%= graph.rules :y, short: true %>
+  <%= graph.rules :x, emphasis: local_assigns[:emphasis] %>
+  <%= graph.axis :y do |value| %>
+    <%= value.humanize %>
+  <% end %>
+  <%= graph.axis :x do |value| %>
+    <%= value %>
+  <% end %>
+  <%= graph.categories do |category| %>
+    <% if local_assigns[:stacked] %>
+      <%= category.series do |series| %>
+        <%= series.bar %>
+      <% end %>
+    <% else %>
+      <%= category.bar %>
+    <% end %>
+  <% end %>
+  <%= graph.legend do |series| %>
+    <%= series.dot %>
+    <%= series.name&.to_s&.humanize || 'Something' %>
+  <% end %>
+  <%= graph.tooltips do |category| %>
+    <div class="tooltip-inner-content">
+      <div class="tooltip-title">
+        <%= category.name&.to_s&.humanize || 'Something' %>
+      </div>
+      <dl class="tooltip-items">
+        <%= category.series class: 'tooltip-item' do |series| %>
+          <dt>
+            <%= series.dot %>
+            <%= series.name&.to_s&.humanize || 'Something' %>
+          </dt>
+          <dd>
+            <%= number_to_human series.value %>
+          </dd>
+        <% end %>
+      </dl>
+    </div>
+  <% end %>
+<% end %>

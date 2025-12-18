@@ -1,0 +1,34 @@
+<%= graph_for graphable, axis_options: { y: { stacked: local_assigns[:stacked] } } do |graph| %>
+  <%= graph.rules :y, emphasis: local_assigns[:emphasis] %>
+  <%= graph.axis :y do |value| %>
+    <%= number_to_human value %>
+  <% end %>
+  <%= graph.axis :x do |value| %>
+    <%= value %>
+  <% end %>
+  <%= graph.series do |series| %>
+    <%= series.area smooth: local_assigns[:smooth] %>
+  <% end %>
+  <%= graph.legend do |series| %>
+    <%= series.dot %>
+    <%= series.name&.to_s&.humanize || 'Something' %>
+  <% end %>
+  <%= graph.tooltips do |category| %>
+    <div class="tooltip-inner-content">
+      <div class="tooltip-title">
+        <%= category.name&.to_s&.humanize || 'Something' %>
+      </div>
+      <dl class="tooltip-items">
+        <%= category.series class: 'tooltip-item' do |series| %>
+          <dt>
+            <%= series.dot %>
+            <%= series.name&.to_s&.humanize || 'Something' %>
+          </dt>
+          <dd>
+            <%= number_to_human series.value %>
+          </dd>
+        <% end %>
+      </dl>
+    </div>
+  <% end %>
+<% end %>

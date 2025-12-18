@@ -1,0 +1,71 @@
+<%= turbo_refreshes_with method: :morph, scroll: :preserve %>
+
+<% if @sample.pulses? %>
+  <%= turbo_stream_from 'pulse' %>
+<% end %>
+
+<header>
+  <h1>RCharts demo</h1>
+  <div>
+    <span>
+      Reload the page for fresh random data.
+    </span>
+    <nav>
+      <%= button_to 'Reload', nil, method: :get, data: { turbo_action: :replace } %>
+      <%= form_with model: @sample, method: :get, data: { turbo_action: :replace } do |form| %>
+        <%= form.hidden_field :pulses, value: @sample.pulses? ? false : true %>
+        <%= form.submit @sample.pulses? ? 'Turn off auto-reload' : 'Turn on auto-reload',
+                        class: { 'red' => @sample.pulses?, 'green' => !@sample.pulses? } %>
+      <% end %>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2>By series</h2>
+    <%= line_graph_for @sample.points, 'Base case' %>
+    <%= line_graph_for @sample.points, 'Base case smoothed', smooth: 0.16 %>
+    <%= line_graph_for @sample.times, 'Times' %>
+    <%= line_graph_for @sample.times, 'Times smoothed', smooth: 0.16 %>
+    <%= scatter_graph_for @sample.points, 'Base case scattered' %>
+    <%= area_graph_for @sample.points, 'Base case area' %>
+    <%= area_graph_for @sample.points, 'Base case area smoothed', smooth: 0.16 %>
+    <%= line_graph_for @sample.ugly_points, 'Ugly points' %>
+    <%= line_graph_for @sample.negative_points, 'Negative points' %>
+    <%= line_graph_for @sample.mixed_points, 'Mixed points', emphasis: :zero? %>
+    <%= line_graph_for @sample.series_points, 'Multiple series' %>
+    <%= line_graph_for @sample.ugly_series_points, 'Ugly multiple series' %>
+    <%= line_graph_for @sample.negative_series_points, 'Negative multiple series' %>
+    <%= line_graph_for @sample.mixed_series_points, 'Mixed multiple series', emphasis: :zero? %>
+    <%= line_graph_for @sample.mixed_series_points, 'Mixed multiple series smoothed', emphasis: :zero?, smooth: 0.16 %>
+    <%= scatter_graph_for @sample.mixed_series_points, 'Mixed multiple series scattered', emphasis: :zero? %>
+    <%= area_graph_for @sample.mixed_series_points, 'Mixed multiple series area', emphasis: :zero?, stacked: true %>
+    <%= area_graph_for @sample.mixed_series_points, 'Mixed multiple series area smoothed',
+                       emphasis: :zero?, smooth: 0.16, stacked: true %>
+  </section>
+  <section>
+    <h2>By category</h2>
+    <%= bar_chart_for @sample.categories, 'Base case', minimum: 0 %>
+    <%= horizontal_bar_chart_for @sample.categories, 'Base case horizontal', minimum: 0 %>
+    <%= bar_chart_for @sample.ugly_categories, 'Ugly points', minimum: 0 %>
+    <%= bar_chart_for @sample.negative_categories, 'Negative points' %>
+    <%= bar_chart_for @sample.mixed_categories, 'Mixed points', emphasis: :zero? %>
+    <%= bar_chart_for @sample.series_categories, 'Multiple series', minimum: 0 %>
+    <%= bar_chart_for @sample.ugly_series_categories, 'Ugly multiple series', minimum: 0 %>
+    <%= bar_chart_for @sample.negative_series_categories, 'Negative multiple series' %>
+    <%= bar_chart_for @sample.mixed_series_categories, 'Mixed multiple series', emphasis: :zero? %>
+    <%= bar_chart_for @sample.series_categories, 'Stacked multiple series', stacked: true, minimum: 0 %>
+    <%= horizontal_bar_chart_for @sample.series_categories, 'Stacked multiple series', stacked: true %>
+    <%= bar_chart_for @sample.ugly_series_categories, 'Stacked ugly multiple series', stacked: true, minimum: 0 %>
+    <%= bar_chart_for @sample.negative_series_categories, 'Stacked negative multiple series', stacked: true %>
+    <%= bar_chart_for @sample.mixed_series_categories, 'Stacked mixed multiple series',
+                      emphasis: :zero?, stacked: true %>
+    <%= horizontal_bar_chart_for @sample.mixed_series_categories, 'Stacked mixed multiple series',
+                                 emphasis: :zero?, stacked: true %>
+  </section>
+  <section>
+    <h2>Please don't</h2>
+    <%= mixed_chart_for @sample.mixed_series_points, 'All of the things', smooth: 0.16 %>
+  </section>
+</main>

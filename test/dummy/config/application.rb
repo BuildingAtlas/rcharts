@@ -27,5 +27,9 @@ module Dummy
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.hotwire.spark.css_paths += %w[app/assets/stylesheets].collect { RCharts::Engine.root.join(it) }
+    config.hotwire.spark.html_paths += %w[app/controllers app/helpers app/assets/images app/models
+                                          app/views config/locales].collect { RCharts::Engine.root.join(it) }
   end
 end

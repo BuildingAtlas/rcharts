@@ -1,0 +1,63 @@
+<%= graph_for graphable,
+              axis_options: { x: [ { discrete: :categorical },
+                                   { values_method: :keys, discrete: :categorical } ],
+                              y: { 1 => { values_method: ->(hash) { hash.deep_transform_values { it.try(:*, 2) }.values } } } },
+              series_options: { actual: { color_class: 'unprofessional-lime', symbol: '♥' } } do |graph| %>
+  <%= graph.legend placement: :top do |series| %>
+    <%= series.dot %>
+    <%= series.name&.to_s&.humanize || 'Something' %>
+  <% end %>
+  <%= graph.legend placement: :left do |series| %>
+    <%= series.dot %>
+    <%= series.name&.to_s&.humanize || 'Something' %>
+  <% end %>
+  <%= graph.legend placement: :right do |series| %>
+    <%= series.dot %>
+    <%= series.name&.to_s&.humanize || 'Something' %>
+  <% end %>
+  <%= graph.rules :y, emphasis: :zero? %>
+  <%= graph.rules :x, short: true %>
+  <%= graph.rules :x, 1, short: true %>
+  <%= graph.axis :y, label: 'Primary Y axis' do |value| %>
+    <%= number_with_delimiter value.to_i %>
+  <% end %>
+  <%= graph.axis :y, 1, label: 'Secondary Y axis' do |value| %>
+    <%= tag.tspan('-', style: 'visibility: hidden') unless value.negative? %><%= number_with_delimiter value.to_i %>
+  <% end %>
+  <%= graph.axis :x, label: 'Primary X axis' do |value| %>
+    <%= value.is_a?(Time) ? value.to_fs(:time) : value %>
+  <% end %>
+  <%= graph.axis :x, 1, label: 'Secondary X axis' do |value| %>
+    <%= value.is_a?(Time) ? value.to_fs(:time) : value %>
+  <% end %>
+  <%= graph.categories do |category| %>
+    <%= category.series [ :actual ] do |series| %>
+      <%= series.bar %>
+    <% end %>
+  <% end %>
+  <%= graph.series [ :prediction ] do |series| %>
+    <%= series.line smooth: local_assigns[:smooth] %>
+  <% end %>
+  <%= graph.legend do |series| %>
+    <%= series.dot %>
+    <%= series.name&.to_s&.humanize || 'Something' %>
+  <% end %>
+  <%= graph.tooltips do |category| %>
+    <div class="tooltip-inner-content">
+      <div class="tooltip-title">
+        <%= category.name&.to_s&.humanize || 'Something' %>
+      </div>
+      <dl class="tooltip-items">
+        <%= category.series class: 'tooltip-item' do |series| %>
+          <dt>
+            <%= series.dot %>
+            <%= series.name&.to_s&.humanize || 'Something' %>
+          </dt>
+          <dd>
+            <%= number_to_human series.value %>
+          </dd>
+        <% end %>
+      </dl>
+    </div>
+  <% end %>
+<% end %>

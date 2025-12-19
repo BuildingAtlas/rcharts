@@ -254,6 +254,8 @@ GEM
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.44.0, < 2.0)
     ruby-progressbar (1.13.0)
+    sdoc (2.6.5)
+      rdoc (>= 5.0)
     securerandom (0.4.1)
     sqlite3 (2.8.0-aarch64-linux-gnu)
     sqlite3 (2.8.0-aarch64-linux-musl)
@@ -308,6 +310,7 @@ DEPENDENCIES
   rubocop-minitest
   rubocop-performance
   rubocop-rails
+  sdoc
   sqlite3
   turbo-rails
   web-console

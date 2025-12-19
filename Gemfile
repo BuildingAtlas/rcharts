@@ -17,6 +17,8 @@ gem 'turbo-rails'
 
 gem 'web-console', group: :development
 
+gem 'sdoc'
+
 # Opinionated Ruby styling [https://rubocop.org]
 gem 'rubocop'
 gem 'rubocop-capybara', require: false

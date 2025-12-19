@@ -24,12 +24,12 @@ module RCharts
         # To change the global set of symbols and colors, see RCharts.symbol_for and RCharts.color_class_for.
         #   <%= graph_for @sales do |graph| %>
         #     <%= graph.legend do |series| %>
-        #       <%= series.dot %>
+        #       <%= series.symbol %>
         #       <%= series.name %>
         #     <% end %>
         #   <% end %>
-        def dot
-          tag.span symbol, class: ['series-symbol', color_class]
+        def symbol
+          tag.span symbol_character, class: ['series-symbol', color_class]
         end
 
         private
@@ -38,7 +38,7 @@ module RCharts
           series_options.fetch(:color_class, RCharts.color_class_for(index))
         end
 
-        def symbol
+        def symbol_character
           series_options.fetch(:symbol, RCharts.symbol_for(index))
         end
       end

@@ -29,7 +29,7 @@ module RCharts
     # Then you can use the new builder with GraphHelper#graph_for:
     #   <%= graph_for @annual_sales, builder: MyGraphBuilder do |graph| %>
     #     <%= graph.legend do |series| %>
-    #       <%= series.dot %>
+    #       <%= series.symbol %>
     #       <%= series.name %>
     #     <% end %>
     #   <% end %>
@@ -165,7 +165,7 @@ module RCharts
       # Renders the legend. For each series yields a Legend::EntryBuilder.
       #   <%= graph_for @annual_sales do |graph| %>
       #     <%= graph.legend do |series| %>
-      #       <%= series.dot %>
+      #       <%= series.symbol %>
       #       <%= series.name %>
       #     <% end %>
       #   <% end %>
@@ -192,7 +192,7 @@ module RCharts
       #         <dl class="tooltip-items">
       #           <%= category.series class: 'tooltip-item' do |series| %>
       #             <dt>
-      #               <%= series.dot %>
+      #               <%= series.symbol %>
       #               <%= series.name %>
       #             </dt>
       #             <dd>

@@ -1,18 +1,18 @@
 <%= graph_for graphable,
-              axis_options: { x: [ { discrete: :categorical },
-                                   { values_method: :keys, discrete: :categorical } ],
+              axis_options: { x: [{ discrete: :categorical },
+                                  { values_method: :keys, discrete: :categorical }],
                               y: { 1 => { values_method: ->(hash) { hash.deep_transform_values { it.try(:*, 2) }.values } } } },
               series_options: { actual: { color_class: 'unprofessional-lime', symbol: '♥' } } do |graph| %>
   <%= graph.legend placement: :top do |series| %>
-    <%= series.dot %>
+    <%= series.symbol %>
     <%= series.name&.to_s&.humanize || 'Something' %>
   <% end %>
   <%= graph.legend placement: :left do |series| %>
-    <%= series.dot %>
+    <%= series.symbol %>
     <%= series.name&.to_s&.humanize || 'Something' %>
   <% end %>
   <%= graph.legend placement: :right do |series| %>
-    <%= series.dot %>
+    <%= series.symbol %>
     <%= series.name&.to_s&.humanize || 'Something' %>
   <% end %>
   <%= graph.rules :y, emphasis: :zero? %>
@@ -31,15 +31,15 @@
     <%= value.is_a?(Time) ? value.to_fs(:time) : value %>
   <% end %>
   <%= graph.categories do |category| %>
-    <%= category.series [ :actual ] do |series| %>
+    <%= category.series [:actual] do |series| %>
       <%= series.bar %>
     <% end %>
   <% end %>
-  <%= graph.series [ :prediction ] do |series| %>
+  <%= graph.series [:prediction] do |series| %>
     <%= series.line smooth: local_assigns[:smooth] %>
   <% end %>
   <%= graph.legend do |series| %>
-    <%= series.dot %>
+    <%= series.symbol %>
     <%= series.name&.to_s&.humanize || 'Something' %>
   <% end %>
   <%= graph.tooltips do |category| %>
@@ -50,7 +50,7 @@
       <dl class="tooltip-items">
         <%= category.series class: 'tooltip-item' do |series| %>
           <dt>
-            <%= series.dot %>
+            <%= series.symbol %>
             <%= series.name&.to_s&.humanize || 'Something' %>
           </dt>
           <dd>

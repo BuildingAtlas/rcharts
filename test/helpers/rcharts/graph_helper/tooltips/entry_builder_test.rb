@@ -31,24 +31,24 @@ module RCharts
           assert_equal 2, @builder.index
         end
 
-        test 'renders dot' do
-          assert_dom_equal <<~HTML, render(@builder, &:dot)
+        test 'renders symbol' do
+          assert_dom_equal <<~HTML, render(@builder, &:symbol)
             <span class="series-symbol blue">●</span>
           HTML
         end
 
-        test 'renders dot with custom color class' do
+        test 'renders symbol with custom color class' do
           @builder.series_options[:color_class] = 'red'
 
-          assert_dom_equal <<~HTML, render(@builder, &:dot)
+          assert_dom_equal <<~HTML, render(@builder, &:symbol)
             <span class="series-symbol red">●</span>
           HTML
         end
 
-        test 'renders dot with custom symbol' do
+        test 'renders symbol with custom symbol' do
           @builder.series_options[:symbol] = '★'
 
-          assert_dom_equal <<~HTML, render(@builder, &:dot)
+          assert_dom_equal <<~HTML, render(@builder, &:symbol)
             <span class="series-symbol blue">★</span>
           HTML
         end

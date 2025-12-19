@@ -22,13 +22,13 @@ module RCharts
         #     <%= graph.tooltips do |category| %>
         #       <h4><%= category.name %></h4>
         #       <%= category.series do |series| %>
-        #         <%= series.dot %>
+        #         <%= series.symbol %>
         #         <%= series.name %>
         #       <% end %>
         #     <% end %>
         #   <% end %>
-        def dot
-          tag.span symbol, class: ['series-symbol', color_class]
+        def symbol
+          tag.span symbol_character, class: ['series-symbol', color_class]
         end
 
         private
@@ -39,7 +39,7 @@ module RCharts
           series_options.fetch(:color_class, color_class_for(index))
         end
 
-        def symbol
+        def symbol_character
           series_options.fetch(:symbol, symbol_for(index))
         end
       end

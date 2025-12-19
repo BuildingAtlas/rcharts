@@ -13,7 +13,7 @@ module RCharts
         test 'renders series' do
           @builder.series_options.merge!(series_one: { color_class: 'kiwi', symbol: '★' }, series_two: {})
           render @builder do |tooltip|
-            tooltip.series(&:dot)
+            tooltip.series(&:symbol)
           end
 
           assert_dom_equal <<~HTML, rendered

@@ -6,6 +6,7 @@ module RCharts
       class ScatterElement < PathElement
         attribute :marker_size, :float, default: 10
         attribute :marker_margin, :float, default: 2
+        attribute :marker_id
 
         private
 
@@ -29,7 +30,7 @@ module RCharts
 
         def definitions_tag
           tag.defs do
-            cross_tag
+            cross_tag unless marker_id
           end
         end
 
@@ -45,7 +46,7 @@ module RCharts
         end
 
         def dot_for(point)
-          tag.use href: "##{id}", x: Percentage.new(point.x), y: Percentage.new(point.y),
+          tag.use href: marker_id || "##{id}", x: Percentage.new(point.x), y: Percentage.new(point.y),
                   class: ['series-path', color_class]
         end
 

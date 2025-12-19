@@ -11,6 +11,7 @@ module RCharts
         attribute :ticks, default: -> { {} }
         attribute :label
         attribute :horizontal, :boolean, default: false
+        attribute :character_scaling_factor, :float, default: 1.0
 
         private
 
@@ -31,7 +32,8 @@ module RCharts
         end
 
         def svg_tag(&)
-          tag.svg class: 'axis-ticks', width: max_column_characters.try { "#{it}ch" }, data: { axis: axis_id } do
+          tag.svg class: 'axis-ticks', width: max_column_characters.try { "#{it * character_scaling_factor}ch" },
+                  data: { axis: axis_id } do
             ticks.each do |position, value|
               concat tick_tag_for(position, value, &)
             end

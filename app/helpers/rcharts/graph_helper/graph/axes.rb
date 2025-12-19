@@ -31,7 +31,7 @@ module RCharts
 
         def build_axis(graphable:, name:, index:, **options)
           discrete = case options[:values_method].to_proc.call(graphable).first
-                     when String then :categorical
+                     when String, Symbol then :categorical
                      end
           Axis.new(graphable:, name:, index:, discrete:, **options)
         end

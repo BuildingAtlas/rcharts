@@ -96,11 +96,11 @@ module RCharts
       # passed through to the builder.
       #
       # See Categories::CategoryBuilder for more information.
-      def categories(**, &)
+      def categories(builder: Categories::CategoryBuilder, **, &)
         tag.svg class: 'category-container' do
           composition.values.each_with_index do |(name, category), index|
-            concat render Categories::CategoryBuilder.new(layout_axes: composition.axes, name:, category:, index:,
-                                                          values_count: composition.values.count, series_options:), &
+            concat render builder.new(layout_axes: composition.axes, name:, category:, index:,
+                                      values_count: composition.values.count, series_options:), &
           end
         end
       end

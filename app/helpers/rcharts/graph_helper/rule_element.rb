@@ -2,7 +2,7 @@
 
 module RCharts
   module GraphHelper
-    class RuleElement < Element
+    class RuleElement < Element # :nodoc:
       attribute :horizontal_axis, :boolean, default: false
       attribute :axis_index, :integer, default: 0
       attribute :short, :boolean, default: false

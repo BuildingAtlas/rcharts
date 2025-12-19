@@ -3,6 +3,7 @@
 module RCharts
   module GraphHelper
     module Categories
+      # = Bar Builder
       class BarBuilder < ElementBuilder
         attribute :name
         attribute :inline_size, :'rcharts/percentage', default: Percentage::MAX
@@ -13,6 +14,14 @@ module RCharts
         attribute :horizontal, :boolean, default: false
         attribute :series_options, default: -> { {} }
 
+        # Renders a bar segment. Passes through <tt>:data</tt>, and <tt>:aria</tt>, and <tt>:class</tt> options to the tag builder.
+        #   <%= graph_for @annual_sales do |graph| %>
+        #     <%= graph.category do |category| %>
+        #       <%= category.series do |series| %>
+        #         <%= series.bar %>
+        #       <% end %>
+        #     <% end %>
+        #   <% end %>
         def bar(**)
           render BarSegmentElement.new(inline_size:, block_size:, block_position:, inline_index:, series_index:,
                                        horizontal:, series_options:, **)

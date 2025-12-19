@@ -4,7 +4,7 @@ module RCharts
   module GraphHelper
     module Graph
       class Axis
-        module Positioning
+        module Positioning # :nodoc:
           extend ActiveSupport::Concern
           include Ticks
 

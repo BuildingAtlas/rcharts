@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Tooltips
-      class ForeignObjectElement < Element
+      class ForeignObjectElement < Element # :nodoc:
         attribute :inline_position, :'rcharts/percentage', default: Percentage::MIN
         attribute :inline_axis, :'rcharts/symbol'
         attribute :index, :integer, default: 0

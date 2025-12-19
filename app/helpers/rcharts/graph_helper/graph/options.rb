@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Graph
-      class Options
+      class Options # :nodoc:
         DEFAULTS = { x: { 0 => { values_method: :keys } }, y: { 0 => { values_method: :values } } }.freeze
 
         def initialize(keys, options)

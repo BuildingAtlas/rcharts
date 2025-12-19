@@ -2,7 +2,7 @@
 
 module RCharts
   module Type
-    class Symbol < ActiveModel::Type::Value
+    class Symbol < ActiveModel::Type::Value # :nodoc:
       include ActiveModel::Type::Helpers::Immutable
 
       def type

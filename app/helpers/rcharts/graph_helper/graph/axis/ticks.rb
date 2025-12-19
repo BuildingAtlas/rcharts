@@ -4,7 +4,7 @@ module RCharts
   module GraphHelper
     module Graph
       class Axis
-        module Ticks
+        module Ticks # :nodoc:
           INTERVAL_FACTORS = [1, 2, 5, 10, 30].freeze
           INTERVAL_BASES = ActiveSupport::Duration::PARTS_IN_SECONDS
           ALL_INTERVALS = INTERVAL_BASES.values.flat_map { |base| INTERVAL_FACTORS.collect { base * it } }

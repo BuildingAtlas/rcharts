@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Tooltips
-      class HoverTargetElement < Element
+      class HoverTargetElement < Element # :nodoc:
         attribute :inline_position, :'rcharts/percentage', default: Percentage::MIN
         attribute :inline_size, :'rcharts/percentage', default: Percentage::MIN
         attribute :inline_axis, :'rcharts/symbol'

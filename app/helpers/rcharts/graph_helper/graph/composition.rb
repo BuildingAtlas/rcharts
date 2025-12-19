@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Graph
-      class Composition
+      class Composition # :nodoc:
         attr_reader :axes
 
         delegate :sum_complete, :signed, :stacked, to: :calculator

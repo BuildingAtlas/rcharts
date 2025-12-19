@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Series
-      class ScatterElement < PathElement
+      class ScatterElement < PathElement # :nodoc:
         attribute :marker_size, :float, default: 10
         attribute :marker_margin, :float, default: 2
         attribute :marker_id

@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Axes
-      class AxisElement < Element
+      class AxisElement < Element # :nodoc:
         include Styles
 
         attribute :name

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RCharts
-  class Percentage
+  class Percentage # :nodoc:
     attr_reader :value
 
     def self.wrap(value)

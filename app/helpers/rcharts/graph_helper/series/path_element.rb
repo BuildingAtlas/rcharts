@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Series
-      class PathElement < Element
+      class PathElement < Element # :nodoc:
         attribute :series_options, default: -> { {} }
         attribute :series, default: -> { {} }
         attribute :index, :integer, default: 0
@@ -31,7 +31,7 @@ module RCharts
         end
 
         def path_tag
-          tag.path d: path_data, style: "d:path(\"#{path_data}\")", class: ['series-path', color_class], data:, aria:,
+          tag.path d: path_data, style: "d:path(\"#{path_data}\")", class: ['series-path', color_class, class_names], data:, aria:,
                    mask: "url(##{mask_id})"
         end
 

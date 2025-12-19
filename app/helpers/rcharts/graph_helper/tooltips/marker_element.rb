@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Tooltips
-      class MarkerElement < Element
+      class MarkerElement < Element # :nodoc:
         attribute :inline_position, :'rcharts/percentage'
         attribute :inline_axis, :'rcharts/symbol'
 

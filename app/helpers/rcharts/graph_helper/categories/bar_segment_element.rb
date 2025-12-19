@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Categories
-      class BarSegmentElement < Element
+      class BarSegmentElement < Element # :nodoc:
         attribute :horizontal, :boolean, default: false
         attribute :inline_size, :'rcharts/percentage', default: Percentage::MAX
         attribute :block_size, :'rcharts/percentage', default: Percentage::MAX

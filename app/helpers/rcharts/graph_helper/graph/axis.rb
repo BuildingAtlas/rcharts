@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Graph
-      class Axis
+      class Axis # :nodoc:
         include ActiveModel::API
         include ActiveModel::Attributes
 

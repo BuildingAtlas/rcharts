@@ -3,21 +3,59 @@
 module RCharts
   module GraphHelper
     module Series
+      # = \Series Builder
       class SeriesBuilder < ElementBuilder
+        ##
+        # :attr_accessor:
         attribute :name
-        attribute :composition, default: -> { Graph::Composition.new }
+
+        ##
+        # :attr_accessor: index
         attribute :index, :integer, default: 0
+
+        attribute :composition, default: -> { Graph::Composition.new }
         attribute :series_options, default: -> { {} }
         attribute :id_hash, :string, default: -> { SecureRandom.hex(4) }
 
+        # Renders the series as a line plot. Passes through <tt>:data</tt>, and <tt>:aria</tt>,
+        # and <tt>:class</tt> options to the tag builder.
+        #   <%= graph_for @sales do |graph| %>
+        #     <%= graph.series do |series| %>
+        #       <%= series.line smooth: 0.12 %>
+        #     <% end %>
+        #   <% end %>
+        #
+        # ==== Options
+        # [<tt>:smooth</tt>] Smoothing factor for the line.
         def line(**)
           path_tag(**)
         end
 
+        # Renders the series as an area plot. Passes through <tt>:data</tt>, and <tt>:aria</tt>,
+        # and <tt>:class</tt> options to the tag builder.
+        #   <%= graph_for @sales do |graph| %>
+        #     <%= graph.series do |series| %>
+        #       <%= series.area smooth: 0.12 %>
+        #     <% end %>
+        #   <% end %>
+        #
+        # ==== Options
+        # [<tt>:smooth</tt>] Smoothing factor for the area.
         def area(**)
           area_tag(sign: :positive, **) + area_tag(sign: :negative, **)
         end
 
+        # Renders the series as a scatter plot. Passes through <tt>:data</tt>, and <tt>:aria</tt>,
+        # and <tt>:class</tt> options to the tag builder.
+        #   <%= graph_for @sales do |graph| %>
+        #     <%= graph.series do |series| %>
+        #       <%= series.scatter %>
+        #     <% end %>
+        #   <% end %>
+        # ==== Options
+        # [<tt>:marker_size</tt>] Size of the markers. Defaults to <tt>10.0</tt>.
+        # [<tt>:marker_margin</tt>] Margin around the marker symbol. Defaults to <tt>2.0</tt>.
+        # [<tt>:marker_id</tt>] ID of a custom marker symbol (a <tt><symbol></tt> element).
         def scatter(**)
           scatter_tag(**)
         end

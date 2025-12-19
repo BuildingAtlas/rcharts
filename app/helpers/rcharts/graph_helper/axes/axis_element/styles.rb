@@ -4,7 +4,7 @@ module RCharts
   module GraphHelper
     module Axes
       class AxisElement
-        module Styles
+        module Styles # :nodoc:
           DEFAULT_BREAKPOINTS = { hiding: { even: 1.1, odd: 0.6 }, rotation: { half: 1.0, full: 0.9 } }.freeze
 
           extend ActiveSupport::Concern

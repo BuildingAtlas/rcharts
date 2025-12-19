@@ -3,8 +3,8 @@
 module RCharts
   module GraphHelper
     module Series
-      class Path
-        class PathBuffer < String
+      class Path # :nodoc:
+        class PathBuffer < String # :nodoc:
           SEPARATOR = ' '
 
           def concat(*objects)

@@ -2,7 +2,7 @@
 
 module RCharts
   module GraphHelper
-    # = Element Builder
+    # = \Element Builder
     #
     # Like form builders, but for elements. Concrete builders should inherit from this class.
     # Use this when you need to provide a way for users to choose between different options at rendering time and track
@@ -17,7 +17,10 @@ module RCharts
     # The builder is the place to store information about the state of rendering independent of particular elements.
     # One example is iteration, where users may need to be able to specify different markup for each individual item
     # in the collection. You can allow this by rendering a builder with each object in the collection, declaring
-    # an index attribute on the builder to allow different behavior according to the position of the item.
+    # an index attribute on the builder to allow different behavior according to the position of the item:
+    #   MyElementBuilder < RCharts::GraphHelper::ElementBuilder
+    #     attribute :index, :integer
+    #   end
     #
     # Like elements, builders set and delegate to the view context.
     class ElementBuilder

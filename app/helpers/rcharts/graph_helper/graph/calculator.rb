@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Graph
-      class Calculator
+      class Calculator # :nodoc:
         delegate :[], :dig, to: :to_h
 
         def initialize(values = {})

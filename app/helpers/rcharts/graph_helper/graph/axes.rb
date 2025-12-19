@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Graph
-      class Axes
+      class Axes # :nodoc:
         delegate :[], to: :axes
 
         def initialize(graphable = {}, axis_options = {})

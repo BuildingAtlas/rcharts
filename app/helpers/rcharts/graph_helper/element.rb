@@ -27,12 +27,26 @@ module RCharts
       delegate :render, :tag, to: :view_context
       delegate_missing_to :view_context
 
+      ##
+      # :attr_accessor: id
       attribute :id, :string
+
+      ##
+      # :attr_accessor:
       attribute :class_names
+
+      ##
+      # :attr_writer: class
+
+      ##
+      # :attr_accessor:
       attribute :data, default: -> { {} }
+
+      ##
+      # :attr_accessor:
       attribute :aria, default: -> { {} }
 
-      alias class= class_names=
+      alias class= class_names= # :nodoc:
 
       def render_in(view_context, &)
         with view_context: do
@@ -42,7 +56,7 @@ module RCharts
 
       private
 
-      def tags
+      def tags # :doc:
         ''.html_safe
       end
     end

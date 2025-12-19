@@ -3,22 +3,46 @@
 module RCharts
   module GraphHelper
     module Categories
+      # = Category Builder
       class CategoryBuilder < ElementBuilder
-        attribute :category, default: -> { {} }
-        attribute :index, :integer, default: 0
-        attribute :values_count, :integer, default: 1
+        ##
+        # :attr_accessor:
         attribute :name
+
+        ##
+        # :attr_accessor: index
+        attribute :index, :integer, default: 0
+
+        attribute :category, default: -> { {} }
+        attribute :values_count, :integer, default: 1
         attribute :layout_axes, default: -> { Graph::Axes.new }
         attribute :series_options, default: -> { {} }
 
+        # Shortcut to render a bar for every series. Useful when you don't need to differentiate between different
+        # series. Arguments and options are passed to #series, see there for more details.
         def bar(*, **)
           series(*, **, &:bar)
         end
 
-        def series(names = nil, axis: nil, inline_axis: nil, **, &)
-          bars_tag(axis: inline_axis, **) do
-            filtered_series(names).each_with_index do |(name, value), index|
-              concat bar_for(name, value, index, names&.count, axis:, &)
+        # Renders one or more series present in the data. For each series yields a BarBuilder which
+        # contains the series:
+        #   <%= graph_for @annual_sales do |graph| %>
+        #     <%= graph.category do |category| %>
+        #       <%= category.series do |series| %>
+        #         <%= series.bar %>
+        #       <% end %>
+        #     <% end %>
+        #   <% end %>
+        # The default is to iterate over all series, but you can specify a subset by passing the series names as
+        # arguments.
+        #
+        # ==== Options
+        # [<tt>:axis</tt>] The axis for the series. Defaults to the first continuous axis.
+        # [<tt>:inline_axis</tt>] The axis for the categories. Defaults to the first discrete axis.
+        def series(*names, axis: nil, inline_axis: nil, **, &)
+          bars_tag(axis: inline_axis) do
+            filtered_series(*names).each_with_index do |(name, value), index|
+              concat bar_for(name, value, index, filtered_series(*names)&.count, axis:, **, &)
             end
           end
         end
@@ -32,7 +56,7 @@ module RCharts
           end
         end
 
-        def bar_for(name, value, index, series_count, axis: nil, &)
+        def bar_for(name, value, index, series_count, axis: nil, **, &)
           resolve_axis :continuous, axis do |continuous_axis|
             render BarBuilder.new(name:, inline_index: (continuous_axis.stacked? ? 0 : index),
                                   series_index: category.keys.index(name),
@@ -40,7 +64,8 @@ module RCharts
                                   series_options: series_options.fetch(name, {}),
                                   horizontal: continuous_axis.horizontal?,
                                   block_size: continuous_axis.length_between(0, value.to_f),
-                                  block_position: block_position_for(continuous_axis, name, value)),
+                                  block_position: block_position_for(continuous_axis, name, value),
+                                  **),
                    &
           end
         end
@@ -77,8 +102,8 @@ module RCharts
           filtered_series.keys.index(key)
         end
 
-        def filtered_series(names = nil)
-          category.reject { names&.exclude?(it) }
+        def filtered_series(*names)
+          category.reject { names.presence&.exclude?(it) }
         end
 
         def resolve_axis(type, name = nil, &)

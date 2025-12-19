@@ -2,7 +2,7 @@
 
 module RCharts
   module Type
-    class Percentage < ActiveModel::Type::Float
+    class Percentage < ActiveModel::Type::Float # :nodoc:
       def type
         :percentage
       end

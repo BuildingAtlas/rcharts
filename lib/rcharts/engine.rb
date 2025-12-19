@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RCharts
-  class Engine < ::Rails::Engine
+  class Engine < ::Rails::Engine # :nodoc:
     isolate_namespace RCharts
 
     ActiveSupport::Inflector.inflections(:en) do |inflect|

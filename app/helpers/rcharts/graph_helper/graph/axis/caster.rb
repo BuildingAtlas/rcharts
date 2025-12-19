@@ -4,7 +4,7 @@ module RCharts
   module GraphHelper
     module Graph
       class Axis
-        class Caster
+        class Caster # :nodoc:
           def initialize(value)
             @value = value
           end

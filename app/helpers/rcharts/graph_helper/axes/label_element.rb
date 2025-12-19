@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Axes
-      class LabelElement < Element
+      class LabelElement < Element # :nodoc:
         attribute :label
         attribute :horizontal, :boolean
 

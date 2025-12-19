@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Series
-      class AreaElement < PathElement
+      class AreaElement < PathElement # :nodoc:
         attribute :previous_series, default: -> { {} }
         attribute :mask_series, default: -> { {} }
         attribute :block_position, :float, default: 0

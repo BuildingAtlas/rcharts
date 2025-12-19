@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Categories
-      class BarsElement < Element
+      class BarsElement < Element # :nodoc:
         SPACING_FACTOR = 0.6
 
         attribute :index, :integer, default: 0

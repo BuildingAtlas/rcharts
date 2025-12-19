@@ -3,7 +3,7 @@
 module RCharts
   module GraphHelper
     module Axes
-      class TickElement < Element
+      class TickElement < Element # :nodoc:
         attribute :value
         attribute :position, :'rcharts/percentage', default: Percentage::MIN
         attribute :inline_axis, :'rcharts/symbol'

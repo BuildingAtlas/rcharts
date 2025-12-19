@@ -3,6 +3,7 @@
 module RCharts
   module GraphHelper
     module Series
+      # :nodoc:
       Point = Struct.new(:x, :y) do
         def to_s = "#{x},#{y}"
 

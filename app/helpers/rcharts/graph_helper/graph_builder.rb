@@ -162,7 +162,7 @@ module RCharts
         end
       end
 
-      # Renders the legend. For each series yields a Legend::EntryBuilder.
+      # Renders the legend. For each series yields a LegendEntryBuilder.
       #   <%= graph_for @annual_sales do |graph| %>
       #     <%= graph.legend do |series| %>
       #       <%= series.symbol %>
@@ -170,7 +170,7 @@ module RCharts
       #     <% end %>
       #   <% end %>
       #
-      # See Legend::EntryBuilder for more information.
+      # See LegendEntryBuilder for more information.
       #
       # ==== Options
       # [<tt>:placement</tt>] The placement of the legend (top, bottom, left, right). Defaults to <tt>'bottom'</tt>.
@@ -239,7 +239,7 @@ module RCharts
 
       def legend_item_tag_for(key, index, **, &)
         tag.li class: 'legend-item' do
-          render Legend::EntryBuilder.new(name: key, index:, series_options: series_options_with_defaults[key], **), &
+          render LegendEntryBuilder.new(name: key, index:, series_options: series_options_with_defaults[key], **), &
         end
       end
 

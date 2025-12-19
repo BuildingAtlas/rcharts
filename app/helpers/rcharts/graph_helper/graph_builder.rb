@@ -52,8 +52,12 @@ module RCharts
       end
 
       # Renders the legend.
-      def legend(**, &)
-        render Legend::LegendElement.new(series_options: series_options_with_defaults, **), &
+      def legend(placement: 'bottom', **, &)
+        tag.ul class: 'legend', data: { placement: } do
+          series_options_with_defaults.each_key.with_index do |key, index|
+            concat legend_item_tag_for(key, index, **, &)
+          end
+        end
       end
 
       # Renders the tooltips.
@@ -85,6 +89,12 @@ module RCharts
 
       def selected_series(only: nil)
         series_options_with_defaults.keys.reject { only.presence&.exclude?(it) }
+      end
+
+      def legend_item_tag_for(key, index, **, &)
+        tag.li class: 'legend-item' do
+          render Legend::EntryBuilder.new(name: key, index:, series_options: series_options_with_defaults[key], **), &
+        end
       end
     end
   end

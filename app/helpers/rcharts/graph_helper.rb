@@ -240,8 +240,8 @@ module RCharts
     #   <%= graph_for @book.sales,
     #                 series_options: { coffee_books: { color_class: 'mocha', symbol: '☕' } } do |graph| %>
     # This will affect any lines, areas, markers, bars, legend entries, and tooltips which reference the series.
-    def graph_for(object, builder: GraphBuilder, **, &)
-      tag.div class: 'rcharts-chart' do
+    def graph_for(object, builder: GraphBuilder, data: {}, html: {}, **, &)
+      tag.div class: 'rcharts-chart', data:, **html do
         render builder.new(graphable: object, **), &
       end
     end

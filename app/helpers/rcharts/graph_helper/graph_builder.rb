@@ -96,11 +96,11 @@ module RCharts
       # passed through to the builder.
       #
       # See Categories::CategoryBuilder for more information.
-      def categories(builder: Categories::CategoryBuilder, **, &)
-        tag.svg class: 'category-container' do
+      def categories(builder: Categories::CategoryBuilder, data: {}, html: {}, **, &)
+        tag.svg class: 'category-container', data:, **html do
           composition.values.each_with_index do |(name, category), index|
             concat render builder.new(layout_axes: composition.axes, name:, category:, index:,
-                                      values_count: composition.values.count, series_options:), &
+                                      values_count: composition.values.count, series_options:, **), &
           end
         end
       end
@@ -151,12 +151,12 @@ module RCharts
       # ==== Options
       # [<tt>:short</tt>] Whether to render short rules (e.g. for bar chart categories)
       # [<tt>:emphasis</tt>] A callable predicate that determines whether a rule should be emphasized
-      def rules(*name, short: false, emphasis: nil, **, &)
+      def rules(*name, short: false, emphasis: nil, **)
         tag.svg class: 'grid' do
           axes.fetch(*name).then do |axis|
             axis.ticks.each do |position, value|
               concat render RuleElement.new(short:, position:, value:, emphasis:, gutter:, axis_index: axis.index,
-                                            horizontal_axis: axis.horizontal?), &
+                                            horizontal_axis: axis.horizontal?, **)
             end
           end
         end
@@ -207,7 +207,7 @@ module RCharts
       # See Tooltips::TooltipBuilder for more information.
       def tooltips(**, &)
         tag.svg class: 'tooltips', width: '100%', xmlns: 'http://www.w3.org/2000/svg' do
-          composition.values.each_key { concat tooltip_tag_for(it, &) }
+          composition.values.each_key { concat tooltip_tag_for(it, **, &) }
         end
       end
 
@@ -243,13 +243,14 @@ module RCharts
         end
       end
 
-      def tooltip_tag_for(key, &)
+      def tooltip_tag_for(key, **, &)
         render Tooltips::TooltipElement.new(inline_axis: inline_axis.name,
                                             inline_position: inline_axis.position_for(key) || Percentage::MIN,
                                             inline_size:,
                                             index: index_for(key),
                                             values_count: values.count) do
-          render Tooltips::TooltipBuilder.new(series_options: series_options_with_defaults, values: values[key], name: key), &
+          render Tooltips::TooltipBuilder.new(series_options: series_options_with_defaults, values: values[key],
+                                              name: key, **), &
         end
       end
 

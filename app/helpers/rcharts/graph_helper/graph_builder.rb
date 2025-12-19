@@ -62,12 +62,14 @@ module RCharts
 
       # Renders the tooltips.
       def tooltips(**, &)
-        render Tooltips::TooltipsElement.new(composition:, series_options: series_options_with_defaults), &
+        tag.svg class: 'tooltips', width: '100%', xmlns: 'http://www.w3.org/2000/svg' do
+          composition.values.each_key { concat tooltip_tag_for(it, &) }
+        end
       end
 
       private
 
-      delegate :axes, to: :composition, private: true
+      delegate :axes, :values, to: :composition, private: true
 
       def series_options_with_defaults
         series_options.with_defaults(series_names.index_with { {} })
@@ -95,6 +97,28 @@ module RCharts
         tag.li class: 'legend-item' do
           render Legend::EntryBuilder.new(name: key, index:, series_options: series_options_with_defaults[key], **), &
         end
+      end
+
+      def tooltip_tag_for(key, &)
+        render Tooltips::TooltipElement.new(inline_axis: inline_axis.name,
+                                            inline_position: inline_axis.position_for(key) || Percentage::MIN,
+                                            inline_size:,
+                                            index: index_for(key),
+                                            values_count: values.count) do
+          render Tooltips::TooltipBuilder.new(series_options: series_options_with_defaults, values: values[key], name: key), &
+        end
+      end
+
+      def inline_size
+        Percentage::MAX / values.count
+      end
+
+      def index_for(key)
+        composition.keys.index(key)
+      end
+
+      def inline_axis
+        composition.axes.discrete
       end
     end
   end

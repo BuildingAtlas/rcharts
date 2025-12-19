@@ -23,7 +23,7 @@ module RCharts
         def path_tag
           tag.g do
             points.select(&:complete?).each do |point|
-              concat dot_for(point)
+              concat marker_for(point)
             end
           end
         end
@@ -45,7 +45,7 @@ module RCharts
                    class: 'series-path'
         end
 
-        def dot_for(point)
+        def marker_for(point)
           tag.use href: marker_id || "##{id}", x: Percentage.new(point.x), y: Percentage.new(point.y),
                   class: ['series-path', color_class]
         end

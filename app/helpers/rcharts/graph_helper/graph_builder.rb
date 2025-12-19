@@ -13,7 +13,13 @@ module RCharts
 
       # Renders a series for a set of points.
       def series(names = nil, **, &)
-        render Series::SeriesElement.new(composition:, series_names: names, series_options: series_options_with_defaults), &
+        tag.svg class: 'series-container' do
+          selected_series(excluding: names).each do |key|
+            concat render Series::SeriesBuilder.new(name: key, index: series_options_with_defaults.keys.index(key),
+                                                    series_options: series_options_with_defaults.fetch(key, {}),
+                                                    composition:), &
+          end
+        end
       end
 
       # Renders a category.
@@ -75,6 +81,10 @@ module RCharts
         in Array => graphable_array then (0...graphable_array.count).to_a
         else [nil]
         end
+      end
+
+      def selected_series(only: nil)
+        series_options_with_defaults.keys.reject { only.presence&.exclude?(it) }
       end
     end
   end

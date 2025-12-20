@@ -55,6 +55,7 @@ module RCharts
           points.compact.chunk(&:complete?).filter_map do |complete, chunk|
             next unless complete
 
+            chunk.sort_by!(&:x)
             chunk.first => { x:, y: }
             chunk.last - chunk.first => { x: width, y: height }
             { x:, y:, width:, height: }

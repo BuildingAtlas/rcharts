@@ -35,7 +35,7 @@ module RCharts
             end
 
             def position_for(value)
-              return position_at(keys.index(value)) if discrete == :categorical
+              return values.flatten.index(value).try { position_at(it) } if discrete == :categorical
               return 0 if adjusted_maximum == adjusted_minimum
 
               downcasted_position_for(value)

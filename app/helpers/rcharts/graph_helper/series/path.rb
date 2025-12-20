@@ -114,15 +114,11 @@ module RCharts
         end
 
         def move_to(point)
-          return nil unless point
-
-          "M #{point}"
+          "M #{point}" if point
         end
 
         def line_to(point)
-          return nil unless point
-
-          "L #{point}"
+          "L #{point}" if point
         end
 
         def curve_for(previous_point, current, next_point, subsequent_point, smoothing)
@@ -146,18 +142,11 @@ module RCharts
         end
 
         def concat(*objects)
-          objects.each do |object|
-            buffer.concat object
-          end
+          objects.each { buffer.concat it }
         end
 
-        def compacted_points
-          points.compact.select(&:complete?)
-        end
-
-        def compacted_previous_points
-          previous_points.compact.select(&:complete?)
-        end
+        def compacted_points = points.compact.select(&:complete?)
+        def compacted_previous_points = previous_points.compact.select(&:complete?)
       end
     end
   end

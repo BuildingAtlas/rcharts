@@ -5,7 +5,7 @@ require 'test_helper'
 module RCharts
   module GraphHelper
     module Series
-      class SeriesBuilderTest < ActionView::TestCase
+      class SeriesBuilderTest < ActionView::TestCase # rubocop:disable Metrics/ClassLength
         setup do
           @composition = Graph::Composition.new({ 2000 => { predicted: 42, actual: 43 },
                                                   2001 => { predicted: 44, actual: 45 },

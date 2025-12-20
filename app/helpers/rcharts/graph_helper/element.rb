@@ -56,7 +56,8 @@ module RCharts
 
       private
 
-      def tags # :doc:
+      # :doc:
+      def tags
         ''.html_safe
       end
     end

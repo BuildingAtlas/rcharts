@@ -56,7 +56,7 @@ module RCharts
           end
         end
 
-        def bar_for(name, value, index, series_count, axis: nil, **, &)
+        def bar_for(name, value, index, series_count, axis: nil, **, &) # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
           resolve_axis :continuous, axis do |continuous_axis|
             render BarBuilder.new(name:, inline_index: (continuous_axis.stacked? ? 0 : index),
                                   series_index: category.keys.index(name),

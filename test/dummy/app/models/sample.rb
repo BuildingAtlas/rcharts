@@ -53,7 +53,7 @@ class Sample
   end
 
   def distribution_data
-    (0..20).to_a.to_h { [it, randomize(it * 5)] }
+    (0..20).to_a.index_with { randomize(it * 5) }
   end
 
   private

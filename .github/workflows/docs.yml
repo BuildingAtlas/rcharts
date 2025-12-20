@@ -1,0 +1,52 @@
+name: Generate docs
+
+on:
+  push:
+    branches: [ 'main' ]
+
+permissions:
+  contents: read
+  id-token: write
+  pages: write
+
+concurrency:
+  group: 'docs'
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby
+          bundler-cache: true
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Run SDoc
+        run: bin/sdoc --format sdoc --github --title 'RCharts' --main README.md --template rails
+        env:
+          HORO_CANONICAL_URL: ${{ steps.pages.outputs.base_path }}
+          HORO_PROJECT_NAME: RCharts
+          HORO_PROJECT_VERSION: '@${{ github.sha }}'
+          HORO_BADGE_VERSION: main
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: 'doc/'
+
+  deploy:
+    environment:
+      name: docs
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

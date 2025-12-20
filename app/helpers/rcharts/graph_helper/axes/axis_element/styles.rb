@@ -71,7 +71,7 @@ module RCharts
             end
 
             def breakpoints
-              flatten_breakpoints(super.with_defaults(DEFAULT_BREAKPOINTS))
+              flatten_breakpoints(DEFAULT_BREAKPOINTS.deep_merge(super))
             end
 
             def flatten_breakpoints(hash)

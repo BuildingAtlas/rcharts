@@ -67,5 +67,7 @@
   <section>
     <h2>Please don't</h2>
     <%= mixed_chart_for @sample.mixed_series_points, 'All of the things', smooth: 0.16 %>
+    <%= mixed_chart_for @sample.mixed_series_points, 'Bars and lines on different axes',
+                        smooth: 0.16, both_axes: true %>
   </section>
 </main>

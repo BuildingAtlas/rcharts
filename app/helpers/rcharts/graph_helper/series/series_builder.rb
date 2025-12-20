@@ -27,6 +27,8 @@ module RCharts
         #
         # ==== Options
         # [<tt>:smooth</tt>] Smoothing factor for the line.
+        # [<tt>:axis</tt>] The axis for the series. Defaults to the first continuous axis.
+        # [<tt>:inline_axis</tt>] The axis for the categories. Defaults to the first discrete axis.
         def line(**)
           path_tag(**)
         end
@@ -41,6 +43,8 @@ module RCharts
         #
         # ==== Options
         # [<tt>:smooth</tt>] Smoothing factor for the area.
+        # [<tt>:axis</tt>] The axis for the series. Defaults to the first continuous axis.
+        # [<tt>:inline_axis</tt>] The axis for the categories. Defaults to the first discrete axis.
         def area(**)
           area_tag(sign: :positive, **) + area_tag(sign: :negative, **)
         end
@@ -56,73 +60,84 @@ module RCharts
         # [<tt>:marker_size</tt>] Size of the markers. Defaults to <tt>10.0</tt>.
         # [<tt>:marker_margin</tt>] Margin around the marker symbol. Defaults to <tt>2.0</tt>.
         # [<tt>:marker_id</tt>] ID of a custom marker symbol (a <tt><symbol></tt> element).
+        # [<tt>:axis</tt>] The axis for the series. Defaults to the first continuous axis.
+        # [<tt>:inline_axis</tt>] The axis for the categories. Defaults to the first discrete axis.
         def scatter(**)
           scatter_tag(**)
         end
 
         private
 
-        delegate :stacked?, to: :block_axis, private: true
-        delegate :horizontal?, to: :inline_axis, private: true
-
-        alias horizontal horizontal?
-
-        def path_tag(**)
-          render PathElement.new(series: current_points, horizontal:, series_options:, index:, id_hash:, **)
+        def path_tag(axis: nil, inline_axis: nil, **)
+          resolve_axis :continuous, axis do |continuous_axis|
+            resolve_axis :discrete, inline_axis do |discrete_axis|
+              render PathElement.new(series: current_points(discrete_axis, continuous_axis),
+                                     horizontal: discrete_axis.horizontal?, series_options:, index:, id_hash:, **)
+            end
+          end
         end
 
-        def area_tag(sign: nil, **)
-          render AreaElement.new(series: current_points(signed: sign),
-                                 previous_series: previous_points(signed: sign), mask_series: mask_points,
-                                 block_position:, horizontal:, series_options:, index:, id_hash:, **)
+        def area_tag(sign: nil, axis: nil, inline_axis: nil, **)
+          resolve_axis :continuous, axis do |continuous_axis|
+            resolve_axis :discrete, inline_axis do |discrete_axis|
+              render AreaElement.new(series: current_points(discrete_axis, continuous_axis, signed: sign),
+                                     previous_series: previous_points(discrete_axis, continuous_axis, signed: sign),
+                                     mask_series: mask_points(discrete_axis, continuous_axis),
+                                     block_position: block_position(continuous_axis),
+                                     horizontal: discrete_axis.horizontal?,
+                                     series_options:, index:, id_hash:, **)
+            end
+          end
         end
 
-        def scatter_tag(**)
-          render ScatterElement.new(series: current_points, horizontal:, series_options:, index:, id_hash:, **)
+        def scatter_tag(axis: nil, inline_axis: nil, **)
+          resolve_axis :continuous, axis do |continuous_axis|
+            resolve_axis :discrete, inline_axis do |discrete_axis|
+              render ScatterElement.new(series: current_points(discrete_axis, continuous_axis),
+                                        horizontal: discrete_axis.horizontal?,
+                                        series_options:, index:, id_hash:, **)
+            end
+          end
         end
 
-        def current_points(signed: nil)
-          series(signed:).to_h do |key, value|
+        def current_points(inline_axis, block_axis, signed: nil)
+          series(block_axis, signed:).to_h do |key, value|
             [inline_axis.position_for(key), value.try { block_axis.position_for(it) }]
           end
         end
 
-        def previous_points(signed: nil)
-          return [] if series(signed:) == previous_series(signed:)
+        def previous_points(inline_axis, block_axis, signed: nil)
+          return [] if series(block_axis, signed:) == previous_series(block_axis, signed:)
 
-          previous_series(signed:).to_h do |key, value|
+          previous_series(block_axis, signed:).to_h do |key, value|
             [inline_axis.position_for(key), block_axis.position_for(value)]
           end
         end
 
-        def series(signed: nil)
+        def series(block_axis, signed: nil)
           composition.signed(signed)
-                     .then { stacked? ? it.stacked : it }
+                     .then { block_axis.stacked? ? it.stacked : it }
                      .then { it[name] }
         end
 
-        def previous_series(signed: nil)
+        def previous_series(block_axis, signed: nil)
           composition.signed(signed)
-                     .then { stacked? ? it.stacked(exclude_current: true) : it }
+                     .then { block_axis.stacked? ? it.stacked(exclude_current: true) : it }
                      .then { it[name] }
         end
 
-        def mask_points
+        def mask_points(inline_axis, block_axis)
           composition.sum_complete.to_h do |key, value|
             [inline_axis.position_for(key), value.try { block_axis.position_for(it) }]
           end
         end
 
-        def block_position
+        def block_position(block_axis)
           block_axis.position_for([block_axis.adjusted_minimum, 0].max)
         end
 
-        def block_axis
-          composition.axes.continuous
-        end
-
-        def inline_axis
-          composition.axes.discrete
+        def resolve_axis(type, name = nil, &)
+          (name ? composition.axes.fetch(*name) : composition.axes.public_send(type)).then(&)
         end
       end
     end

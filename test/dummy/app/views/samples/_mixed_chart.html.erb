@@ -1,6 +1,6 @@
 <%= graph_for graphable,
-              axis_options: { x: [{ discrete: :categorical },
-                                  { values_method: :keys, discrete: :categorical }],
+              axis_options: { x: { 1 => { values_method: ->(hash) { hash.keys.collect { it.try(:*, 2) } },
+                                          minimum: 0 } },
                               y: { 1 => { values_method: ->(hash) { hash.deep_transform_values { it.try(:*, 2) }.values } } } },
               series_options: { actual: { color_class: 'unprofessional-lime', symbol: '♥' } } do |graph| %>
   <%= graph.legend placement: :top do |series| %>
@@ -31,12 +31,15 @@
     <%= value.is_a?(Time) ? value.to_fs(:time) : value %>
   <% end %>
   <%= graph.categories do |category| %>
-    <%= category.series :actual do |series| %>
+    <%= category.series :actual, axis: [:y, local_assigns[:both_axes] ? 1 : 0] do |series| %>
       <%= series.bar %>
     <% end %>
   <% end %>
   <%= graph.series :prediction do |series| %>
     <%= series.line smooth: local_assigns[:smooth] %>
+  <% end %>
+  <%= graph.series :other do |series| %>
+    <%= series.line smooth: local_assigns[:smooth], inline_axis: [:x, local_assigns[:both_axes] ? 1 : 0] %>
   <% end %>
   <%= graph.legend do |series| %>
     <%= series.symbol %>

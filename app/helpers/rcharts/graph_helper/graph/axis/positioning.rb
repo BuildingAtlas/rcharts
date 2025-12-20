@@ -38,7 +38,25 @@ module RCharts
               return position_at(keys.index(value)) if discrete == :categorical
               return 0 if adjusted_maximum == adjusted_minimum
 
-              ((value.to_f - adjusted_minimum.to_f) / (adjusted_maximum - adjusted_minimum)) * 100
+              downcasted_position_for(value)
+            end
+
+            private
+
+            def downcasted_position_for(value)
+              ((Caster.new(value).downcast.to_f - casted_adjusted_minimum) / casted_range) * 100
+            end
+
+            def casted_range
+              casted_adjusted_maximum - casted_adjusted_minimum
+            end
+
+            def casted_adjusted_maximum
+              Caster.new(adjusted_maximum).downcast
+            end
+
+            def casted_adjusted_minimum
+              Caster.new(adjusted_minimum).downcast
             end
           end
         end

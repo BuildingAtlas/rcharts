@@ -13,10 +13,6 @@ module RCharts
             upcast(yield downcast)
           end
 
-          private
-
-          attr_reader :value
-
           def downcast
             case value
             when Time then value.to_i
@@ -24,6 +20,10 @@ module RCharts
             else value
             end
           end
+
+          private
+
+          attr_reader :value
 
           def upcast(raw)
             case value

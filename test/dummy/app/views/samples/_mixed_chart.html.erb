@@ -31,11 +31,11 @@
     <%= value.is_a?(Time) ? value.to_fs(:time) : value %>
   <% end %>
   <%= graph.categories do |category| %>
-    <%= category.series [:actual] do |series| %>
+    <%= category.series :actual do |series| %>
       <%= series.bar %>
     <% end %>
   <% end %>
-  <%= graph.series [:prediction] do |series| %>
+  <%= graph.series :prediction do |series| %>
     <%= series.line smooth: local_assigns[:smooth] %>
   <% end %>
   <%= graph.legend do |series| %>

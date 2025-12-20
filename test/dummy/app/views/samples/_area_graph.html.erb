@@ -3,7 +3,7 @@
   <%= graph.axis :y do |value| %>
     <%= number_to_human value %>
   <% end %>
-  <%= graph.axis :x do |value| %>
+  <%= graph.axis :x, breakpoints: local_assigns[:breakpoints].to_h do |value| %>
     <%= value %>
   <% end %>
   <%= graph.series do |series| %>

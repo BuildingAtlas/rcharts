@@ -23,51 +23,37 @@
 
 <main>
   <section>
-    <h2>By series</h2>
-    <%= line_graph_for @sample.points, 'Base case' %>
-    <%= line_graph_for @sample.points, 'Base case smoothed', smooth: 0.16 %>
-    <%= line_graph_for @sample.times, 'Times' %>
-    <%= line_graph_for @sample.times, 'Times smoothed', smooth: 0.16 %>
-    <%= scatter_graph_for @sample.points, 'Base case scattered' %>
-    <%= area_graph_for @sample.points, 'Base case area' %>
-    <%= area_graph_for @sample.points, 'Base case area smoothed', smooth: 0.16 %>
-    <%= line_graph_for @sample.ugly_points, 'Ugly points' %>
-    <%= line_graph_for @sample.negative_points, 'Negative points' %>
-    <%= line_graph_for @sample.mixed_points, 'Mixed points', emphasis: :zero? %>
-    <%= line_graph_for @sample.series_points, 'Multiple series' %>
-    <%= line_graph_for @sample.ugly_series_points, 'Ugly multiple series' %>
-    <%= line_graph_for @sample.negative_series_points, 'Negative multiple series' %>
-    <%= line_graph_for @sample.mixed_series_points, 'Mixed multiple series', emphasis: :zero? %>
-    <%= line_graph_for @sample.mixed_series_points, 'Mixed multiple series smoothed', emphasis: :zero?, smooth: 0.16 %>
-    <%= scatter_graph_for @sample.mixed_series_points, 'Mixed multiple series scattered', emphasis: :zero? %>
-    <%= area_graph_for @sample.mixed_series_points, 'Mixed multiple series area', emphasis: :zero?, stacked: true %>
-    <%= area_graph_for @sample.mixed_series_points, 'Mixed multiple series area smoothed',
-                       emphasis: :zero?, smooth: 0.16, stacked: true %>
+    <h2>Timeseries</h2>
+    <%= line_graph_for @sample.daily_timeseries, 'Daily', breakpoints: { rotation: { half: 1.7 } } %>
+    <%= line_graph_for @sample.monthly_timeseries, 'Monthly (smoothed)', smooth: 0.16, breakpoints: { rotation: { half: 1.4 } } %>
+    <%= line_graph_for @sample.yearly_timeseries, 'Yearly', breakpoints: { rotation: { half: 1.2 } } %>
+    <%= area_graph_for @sample.comparison_timeseries, 'Comparison (stacked area)',
+                       stacked: true, breakpoints: { rotation: { half: 1.2 } } %>
+    <%= line_graph_for @sample.comparison_timeseries, 'Comparison (lines)', breakpoints: { rotation: { half: 1.2 } } %>
+    <%= line_graph_for @sample.sparse_timeseries, 'Sparse data', breakpoints: { rotation: { half: 1.2 } } %>
   </section>
+
   <section>
-    <h2>By category</h2>
-    <%= bar_chart_for @sample.categories, 'Base case', minimum: 0 %>
-    <%= horizontal_bar_chart_for @sample.categories, 'Base case horizontal', minimum: 0 %>
-    <%= bar_chart_for @sample.ugly_categories, 'Ugly points', minimum: 0 %>
-    <%= bar_chart_for @sample.negative_categories, 'Negative points' %>
-    <%= bar_chart_for @sample.mixed_categories, 'Mixed points', emphasis: :zero? %>
-    <%= bar_chart_for @sample.series_categories, 'Multiple series', minimum: 0 %>
-    <%= bar_chart_for @sample.ugly_series_categories, 'Ugly multiple series', minimum: 0 %>
-    <%= bar_chart_for @sample.negative_series_categories, 'Negative multiple series' %>
-    <%= bar_chart_for @sample.mixed_series_categories, 'Mixed multiple series', emphasis: :zero? %>
-    <%= bar_chart_for @sample.series_categories, 'Stacked multiple series', stacked: true, minimum: 0 %>
-    <%= horizontal_bar_chart_for @sample.series_categories, 'Stacked multiple series', stacked: true %>
-    <%= bar_chart_for @sample.ugly_series_categories, 'Stacked ugly multiple series', stacked: true, minimum: 0 %>
-    <%= bar_chart_for @sample.negative_series_categories, 'Stacked negative multiple series', stacked: true %>
-    <%= bar_chart_for @sample.mixed_series_categories, 'Stacked mixed multiple series',
-                      emphasis: :zero?, stacked: true %>
-    <%= horizontal_bar_chart_for @sample.mixed_series_categories, 'Stacked mixed multiple series',
-                                 emphasis: :zero?, stacked: true %>
+    <h2>Categorical</h2>
+    <%= bar_chart_for @sample.categorical_data, 'Simple bar chart', minimum: 0 %>
+    <%= horizontal_bar_chart_for @sample.categorical_data, 'Horizontal bar chart', minimum: 0 %>
+    <%= bar_chart_for @sample.multi_series_categorical, 'Multi-series bar chart', minimum: 0 %>
+    <%= bar_chart_for @sample.multi_series_categorical, 'Stacked bar chart', stacked: true, minimum: 0 %>
+    <%= horizontal_bar_chart_for @sample.multi_series_categorical, 'Stacked horizontal bar chart', stacked: true %>
+    <%= bar_chart_for @sample.mixed_sign_data, 'Mixed signs', emphasis: :zero? %>
   </section>
+
   <section>
-    <h2>Please don't</h2>
-    <%= mixed_chart_for @sample.mixed_series_points, 'All of the things', smooth: 0.16 %>
-    <%= mixed_chart_for @sample.mixed_series_points, 'Bars and lines on different axes',
-                        smooth: 0.16, both_axes: true %>
+    <h2>Continuous & Distributions</h2>
+    <%= line_graph_for @sample.points, 'Linear points' %>
+    <%= scatter_graph_for @sample.points, 'Scatter plot' %>
+    <%= area_graph_for @sample.distribution_data, 'Distribution area', smooth: 0.16 %>
+    <%= line_graph_for @sample.distribution_data, 'Distribution line', smooth: 0.16 %>
+  </section>
+
+  <section>
+    <h2>Advanced Combinations</h2>
+    <%= mixed_chart_for @sample.comparison_timeseries, 'Bars and lines', smooth: 0.16 %>
+    <%= mixed_chart_for @sample.comparison_timeseries, 'Dual axes', smooth: 0.16, both_axes: true %>
   </section>
 </main>

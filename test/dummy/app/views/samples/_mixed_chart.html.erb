@@ -1,8 +1,7 @@
 <%= graph_for graphable,
-              axis_options: { x: { 1 => { values_method: ->(hash) { hash.keys.collect { it.try(:*, 2) } },
-                                          minimum: 0 } },
-                              y: { 1 => { values_method: ->(hash) { hash.deep_transform_values { it.try(:*, 2) }.values } } } },
-              series_options: { actual: { color_class: 'unprofessional-lime', symbol: '♥' } } do |graph| %>
+              axis_options: { x: { 0 => { discrete: :categorical },
+                                   1 => { values_method: ->(hash) { hash.keys.collect { it + 5.days } }, discrete: :categorical } },
+                              y: { 1 => { values_method: ->(hash) { hash.deep_transform_values { it.try(:*, 2) }.values } } } } do |graph| %>
   <%= graph.legend placement: :top do |series| %>
     <%= series.symbol %>
     <%= series.name&.to_s&.humanize || 'Something' %>
@@ -15,7 +14,7 @@
     <%= series.symbol %>
     <%= series.name&.to_s&.humanize || 'Something' %>
   <% end %>
-  <%= graph.rules :y, emphasis: :zero? %>
+  <%= graph.rules :y %>
   <%= graph.rules :x, short: true %>
   <%= graph.rules :x, 1, short: true %>
   <%= graph.axis :y, label: 'Primary Y axis' do |value| %>
@@ -31,14 +30,11 @@
     <%= value.is_a?(Time) ? value.to_fs(:time) : value %>
   <% end %>
   <%= graph.categories do |category| %>
-    <%= category.series :actual, axis: [:y, local_assigns[:both_axes] ? 1 : 0] do |series| %>
+    <%= category.series :current, axis: [:y, local_assigns[:both_axes] ? 1 : 0] do |series| %>
       <%= series.bar %>
     <% end %>
   <% end %>
-  <%= graph.series :prediction do |series| %>
-    <%= series.line smooth: local_assigns[:smooth] %>
-  <% end %>
-  <%= graph.series :other do |series| %>
+  <%= graph.series :previous do |series| %>
     <%= series.line smooth: local_assigns[:smooth], inline_axis: [:x, local_assigns[:both_axes] ? 1 : 0] %>
   <% end %>
   <%= graph.legend do |series| %>

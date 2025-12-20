@@ -1,9 +1,9 @@
 <%= graph_for graphable do |graph| %>
   <%= graph.rules :y, emphasis: local_assigns[:emphasis] %>
   <%= graph.axis :y do |value| %>
-    <%= number_to_human value %>
+    <%= number_with_precision value, strip_insignificant_zeros: true %>
   <% end %>
-  <%= graph.axis :x do |value| %>
+  <%= graph.axis :x, breakpoints: local_assigns[:breakpoints].to_h do |value| %>
     <%= value.is_a?(Time) ? value.to_fs(:time) : value %>
   <% end %>
   <%= graph.series do |series| %>

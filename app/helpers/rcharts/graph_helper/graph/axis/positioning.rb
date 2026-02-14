@@ -18,7 +18,7 @@ module RCharts
             def position_at(index)
               return if index > tick_count
 
-              ((index * (100.0 / (tick_count.nonzero? || 1))) + tick_offset.to_f) * (100 / (100 + (2 * tick_offset.to_f)))
+              (tick_offset.to_f + raw_position_at(index))
             end
 
             def value_at(index)
@@ -42,6 +42,10 @@ module RCharts
             end
 
             private
+
+            def raw_position_at(index)
+              index * (100.0 / ((categorical? ? values_count.nonzero? : tick_count.nonzero?) || 1))
+            end
 
             def downcasted_position_for(value)
               ((Caster.new(value).downcast.to_f - casted_adjusted_minimum) / casted_range) * 100

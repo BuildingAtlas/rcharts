@@ -107,15 +107,15 @@ module RCharts
             @axis.assign_attributes(graphable: { 'a' => 'a', 'b' => 'b', 'c' => 'c', 'd' => 'd' },
                                     discrete: :categorical)
 
-            assert_in_delta 10.0, @axis.position_for('a')
-            assert_in_delta 36.666, @axis.position_for('b')
-            assert_in_delta 90.0, @axis.position_for('d')
+            assert_in_delta 12.5, @axis.position_for('a')
+            assert_in_delta 37.5, @axis.position_for('b')
+            assert_in_delta 87.5, @axis.position_for('d')
           end
 
           test 'returns position for single category' do
             @axis.assign_attributes(graphable: { 'a' => 1.0 }, discrete: :categorical)
 
-            assert_in_delta 25.0, @axis.position_for('a')
+            assert_in_delta 50.0, @axis.position_for('a')
           end
 
           test 'returns position for continuous data' do

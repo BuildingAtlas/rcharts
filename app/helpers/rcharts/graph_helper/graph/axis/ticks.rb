@@ -13,7 +13,8 @@ module RCharts
 
           included do
             def tick_count
-              return values_count.pred if discrete?
+              return values_count.pred if categorical?
+              return values_count if discrete?
 
               ((maximum - adjusted_minimum) / tick_interval).ceil
             end

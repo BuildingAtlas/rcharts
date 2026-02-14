@@ -11,10 +11,16 @@ module RCharts
             @axis = Axis.new
           end
 
+          test 'returns tick count for categorical data' do
+            @axis.assign_attributes(graphable: (1..9).index_with(&:to_f), discrete: :categorical, values_method: :keys)
+
+            assert_equal 8, @axis.tick_count
+          end
+
           test 'returns tick count for discrete data' do
             @axis.assign_attributes(graphable: (1..9).index_with(&:to_f), discrete: true, values_method: :keys)
 
-            assert_equal 8, @axis.tick_count
+            assert_equal 9, @axis.tick_count
           end
 
           test 'returns tick count for continuous data with integers' do

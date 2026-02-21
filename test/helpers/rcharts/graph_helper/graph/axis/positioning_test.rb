@@ -7,6 +7,49 @@ module RCharts
     module Graph
       class Axis
         class PositioningTest < ActiveSupport::TestCase
+          module Integration
+            module Tests
+              extend ActiveSupport::Concern
+
+              included do
+                test 'positioning works with exact domain bounds for dates' do
+                  @axis.assign_attributes(graphable: [Date.new(2026, 2, 21), Date.new(2027, 2, 21), Date.new(2028, 2, 21),
+                                                      Date.new(2029, 2, 21), Date.new(2030, 2, 21), Date.new(2031, 2, 21)]
+                                                       .index_with(&:to_time),
+                                          values_method: :keys)
+
+                  assert_in_delta 0.0, @axis.position_for(Date.new(2026, 2, 21)), 0.01
+                  assert_in_delta 100.0, @axis.position_for(Date.new(2031, 2, 21)), 0.01
+                end
+
+                test 'positioning works with exact domain bounds for times' do
+                  @axis.assign_attributes(graphable: [Time.new(2025, 1, 1, 12, 0, 0).in_time_zone,
+                                                      Time.new(2025, 1, 2, 12, 0, 0).in_time_zone].index_with(&:to_f),
+                                          values_method: :keys)
+
+                  assert_in_delta 0.0, @axis.position_for(Time.new(2025, 1, 1, 12, 0, 0).in_time_zone), 0.01
+                  assert_in_delta 100.0, @axis.position_for(Time.new(2025, 1, 2, 12, 0, 0).in_time_zone), 0.01
+                end
+
+                test 'positioning works with rounded domain bounds' do
+                  @axis.assign_attributes(graphable: [2150, 3200, 5800, 8328].index_with(&:itself), values_method: :values)
+
+                  assert_operator @axis.position_for(2150), :>, 0
+                  assert_in_delta 0.0, @axis.position_for(2000), 0.01
+                end
+
+                test 'preserves existing positioning behavior for integer keys' do
+                  @axis.assign_attributes(graphable: { 10 => 1.0, 20 => 2.0, 30 => 3.0 }, values_method: :keys)
+
+                  assert_in_delta 0.0, @axis.position_for(10), 0.01
+                  assert_in_delta 100.0, @axis.position_for(30), 0.01
+                end
+              end
+            end
+          end
+
+          include Integration::Tests
+
           setup do
             @axis = Axis.new(values_method: :keys,
                              graphable: { 0.5 => -233, 10.5 => 12, 30.0 => 40, 35.0 => nil, 50.0 => 802 })
@@ -56,7 +99,7 @@ module RCharts
           test 'handles date ticks' do
             @axis.graphable = [Date.new(2025, 1, 1), Date.new(2025, 1, 2)].index_with(&:to_time)
 
-            assert_equal 11, @axis.ticks.size
+            assert_equal 13, @axis.ticks.size
           end
 
           test 'handles time ticks' do

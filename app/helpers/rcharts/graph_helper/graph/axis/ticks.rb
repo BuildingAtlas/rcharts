@@ -5,9 +5,15 @@ module RCharts
     module Graph
       class Axis
         module Ticks # :nodoc:
-          INTERVAL_FACTORS = [1, 2, 5, 10, 30].freeze
-          INTERVAL_BASES = ActiveSupport::Duration::PARTS_IN_SECONDS
-          ALL_INTERVALS = INTERVAL_BASES.values.flat_map { |base| INTERVAL_FACTORS.collect { base * it } }
+          DECIMAL_INTERVALS = [1, 2, 2.5, 5, 10].freeze
+          TEMPORAL_INTERVALS = [1.second, 2.seconds, 5.seconds, 10.seconds, 15.seconds, 30.seconds,
+                                1.minute, 2.minutes, 5.minutes, 10.minutes, 15.minutes, 30.minutes,
+                                1.hour, 2.hours, 3.hours, 6.hours, 12.hours,
+                                1.day, 2.days,
+                                1.week, 2.weeks,
+                                1.month, 2.months, 3.months, 6.months,
+                                1.year, 2.years, 5.years, 10.years, 20.years, 50.years, 100.years].freeze
+          TARGET_TICK_COUNT = 10.0
 
           extend ActiveSupport::Concern
 
@@ -16,17 +22,39 @@ module RCharts
               return values_count.pred if categorical?
               return values_count if discrete?
 
-              ((maximum - adjusted_minimum) / tick_interval).ceil
+              (range / tick_interval.to_f).ceil
             end
 
             def adjusted_minimum
-              @adjusted_minimum ||= Caster.new(minimum).casting { (it / tick_interval).floor * tick_interval }
+              @adjusted_minimum ||= domain.domain_minimum
+            end
+
+            def adjusted_maximum
+              @adjusted_maximum ||= domain.domain_maximum
+            end
+
+            def domain
+              @domain ||= Domain.new(minimum:, maximum:, tick_interval: tick_interval.to_f,
+                                     mode: ((values_method == :keys && temporal_data?) || discrete? ? :exact : :rounded))
             end
 
             private
 
             def interval
-              ((maximum + adjustment_for_empty_interval) - (minimum - adjustment_for_empty_interval)) / 10.0
+              interval_range / TARGET_TICK_COUNT
+            end
+
+            def range
+              return (maximum.to_time - adjusted_minimum.to_time).abs if temporal_data?
+
+              maximum - adjusted_minimum
+            end
+
+            def interval_range
+              return (maximum ? 1 : 0) if categorical?
+              return (maximum.to_time - minimum.to_time).abs if temporal_data?
+
+              (maximum + adjustment_for_empty_interval) - (minimum - adjustment_for_empty_interval)
             end
 
             def adjustment_for_empty_interval
@@ -37,15 +65,13 @@ module RCharts
 
             def tick_interval
               return 0 if interval <= 0
-              return ALL_INTERVALS.min_by { (it - interval).abs } if minimum.is_a?(Time)
+              return TEMPORAL_INTERVALS.min_by { (it - interval).abs } if temporal_data?
 
-              tick_base * case (interval / tick_base)
-                          when ..1 then 1
-                          when 1..2 then 2
-                          when 2..2.5 then 2.5
-                          when 2.5..5 then 5
-                          else 10
-                          end
+              tick_base * DECIMAL_INTERVALS.min_by { |n| n < (interval / tick_base) ? Float::INFINITY : n }
+            end
+
+            def temporal_data?
+              minimum.acts_like?(:time) || minimum.acts_like?(:date)
             end
 
             def tick_base
@@ -54,10 +80,6 @@ module RCharts
 
             def tick_offset
               (100.0 / values_count) / 2 if categorical?
-            end
-
-            def adjusted_maximum
-              @adjusted_maximum ||= adjusted_minimum + (tick_count * tick_interval)
             end
           end
         end

@@ -5,6 +5,8 @@ module RCharts
     module Graph
       class Axis
         class Caster # :nodoc:
+          EPOCH_OFFSET = Time.at(0, in: 'Z').to_date.jd
+
           def initialize(value)
             @value = value
           end
@@ -16,7 +18,7 @@ module RCharts
           def downcast
             case value
             when Time then value.to_i
-            when Date then value.jd + value.day_fraction
+            when Date then julian_days.to_i
             else value
             end
           end
@@ -28,11 +30,24 @@ module RCharts
           def upcast(raw)
             case value
             when ActiveSupport::TimeWithZone then value.time_zone.at(raw)
-            when Time then Time.at(raw, in: value_zone)
-            when DateTime then DateTime.jd(0, 0, 0, 0, value.offset, value.start) + raw
-            when Date then Date.jd(raw, value.start)
+            when Time then value.class.at(raw, in: value_zone)
+            when Date then upcast_date(raw)
             else raw
             end
+          end
+
+          def upcast_date(raw)
+            raw.seconds.in_days.divmod(1).then do |days, fraction|
+              value.class.jd(EPOCH_OFFSET + days, *datetime_args, value.start) + fraction
+            end
+          end
+
+          def datetime_args
+            [0, 0, 0, value.offset] if value.is_a?(DateTime)
+          end
+
+          def julian_days
+            ((value.jd - EPOCH_OFFSET) + (value.day_fraction - value.try(:offset).to_f)).days
           end
 
           def value_zone

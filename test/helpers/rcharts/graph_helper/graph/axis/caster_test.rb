@@ -81,7 +81,7 @@ module RCharts
 
           test 'casting allows date changes' do
             assert_not_equal @cervantes_death_date.yday,
-                             Caster.new(@cervantes_death_date).casting(&-> { it + 1.5 }).yday
+                             Caster.new(@cervantes_death_date).casting(&-> { it + 1.day.to_i }).yday
           end
 
           test 'casting preserves date origins' do

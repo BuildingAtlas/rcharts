@@ -99,13 +99,13 @@ module RCharts
           test 'handles date ticks' do
             @axis.graphable = [Date.new(2025, 1, 1), Date.new(2025, 1, 2)].index_with(&:to_time)
 
-            assert_equal 13, @axis.ticks.size
+            assert_equal 9, @axis.ticks.size
           end
 
           test 'handles time ticks' do
             @axis.graphable = [Time.new(2025, 1, 1), Time.new(2025, 1, 2)].index_with(&:to_f) # rubocop:disable Rails/TimeZone
 
-            assert_equal 13, @axis.ticks.size
+            assert_equal 9, @axis.ticks.size
           end
 
           test 'returns position at index' do

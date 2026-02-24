@@ -102,21 +102,21 @@ module RCharts
                                                 Time.new(2025, 1, 2).in_time_zone].index_with(&:to_f),
                                     values_method: :keys)
 
-            assert_equal 12, @axis.tick_count
+            assert_equal 8, @axis.tick_count
           end
 
           test 'returns tick count with times' do
             @axis.assign_attributes(graphable: [Time.new(2025, 1, 1), Time.new(2025, 1, 2)].index_with(&:to_f), # rubocop:disable Rails/TimeZone
                                     values_method: :keys)
 
-            assert_equal 12, @axis.tick_count
+            assert_equal 8, @axis.tick_count
           end
 
           test 'returns tick count with dates' do
             @axis.assign_attributes(graphable: [Date.new(2025, 1, 1), Date.new(2025, 1, 2)].index_with(&:to_time),
                                     values_method: :keys)
 
-            assert_equal 12, @axis.tick_count
+            assert_equal 8, @axis.tick_count
           end
 
           test 'returns adjusted minimum' do
@@ -150,6 +150,13 @@ module RCharts
             @axis.assign_attributes(graphable: [7.9, 8.1, 8.9, 10.5].index_with(&:itself), values_method: :values)
 
             assert_in_delta 7.5, @axis.adjusted_minimum
+          end
+
+          test 'selects 5-year intervals for a 25-year span' do
+            @axis.assign_attributes(graphable: [Date.new(2025, 1, 1), Date.new(2050, 1, 1)].index_with(&:to_time),
+                                    values_method: :keys)
+
+            assert_equal 5, @axis.tick_count
           end
         end
       end

@@ -65,7 +65,7 @@ module RCharts
 
             def tick_interval
               return 0 if interval <= 0
-              return TEMPORAL_INTERVALS.min_by { (it - interval).abs } if temporal_data?
+              return TEMPORAL_INTERVALS.find { it.to_i >= interval } || TEMPORAL_INTERVALS.last if temporal_data?
 
               tick_base * DECIMAL_INTERVALS.min_by { |n| n < (interval / tick_base) ? Float::INFINITY : n }
             end

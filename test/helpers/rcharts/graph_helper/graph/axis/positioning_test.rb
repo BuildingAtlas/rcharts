@@ -15,7 +15,7 @@ module RCharts
                 test 'positioning works with exact domain bounds for dates' do
                   @axis.assign_attributes(graphable: [Date.new(2026, 2, 21), Date.new(2027, 2, 21), Date.new(2028, 2, 21),
                                                       Date.new(2029, 2, 21), Date.new(2030, 2, 21), Date.new(2031, 2, 21)]
-                                                       .index_with(&:to_time),
+                                                     .index_with(&:to_time),
                                           values_method: :keys)
 
                   assert_in_delta 0.0, @axis.position_for(Date.new(2026, 2, 21)), 0.01

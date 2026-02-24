@@ -24,8 +24,8 @@ module RCharts
                      .values
                      .difference(VALUES.values.pluck(:first).select(&:positive?))
                      .then do |difference|
-            assert_not_empty difference
-            assert difference.all?(&:nil?)
+                       assert_not_empty difference
+                       assert difference.all?(&:nil?)
           end
         end
 
@@ -34,8 +34,8 @@ module RCharts
                      .values
                      .difference(VALUES.values.pluck(:first).select(&:negative?))
                      .then do |difference|
-            assert_not_empty difference
-            assert difference.all?(&:nil?)
+                       assert_not_empty difference
+                       assert difference.all?(&:nil?)
           end
         end
 

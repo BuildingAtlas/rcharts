@@ -15,7 +15,7 @@ module RCharts
                 test 'independent axis with dates uses exact bounds for bounds' do
                   @axis.assign_attributes(graphable: [Date.new(2026, 2, 21), Date.new(2027, 2, 21), Date.new(2028, 2, 21),
                                                       Date.new(2029, 2, 21), Date.new(2030, 2, 21), Date.new(2031, 2, 21)]
-                                                       .index_with(&:to_time),
+                                                     .index_with(&:to_time),
                                           values_method: :keys)
 
                   assert_equal Date.new(2026, 2, 21), @axis.adjusted_minimum
@@ -32,7 +32,7 @@ module RCharts
                 test 'independent axis with times uses exact bounds' do
                   @axis.assign_attributes(graphable: [Time.new(2025, 1, 1, 12, 30, 0).in_time_zone,
                                                       Time.new(2025, 1, 1, 14, 45, 0).in_time_zone]
-                                                       .index_with(&:to_f),
+                                                     .index_with(&:to_f),
                                           values_method: :keys)
 
                   assert_equal Time.new(2025, 1, 1, 12, 30, 0).in_time_zone, @axis.adjusted_minimum

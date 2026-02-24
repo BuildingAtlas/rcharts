@@ -33,8 +33,8 @@ module RCharts
           @defaults.deep_merge({ a: { 0 => 'foo', 1 => 'bar' } })
                    .to_h { |key, value| [key.to_s.upcase, value.to_s.upcase] }
                    .then do |expected|
-            assert_equal(expected, Options.new([], { a: { 0 => 'foo', 1 => 'bar' } })
-                                          .to_h { |key, value| [key.to_s.upcase, value.to_s.upcase] })
+                     assert_equal(expected, Options.new([], { a: { 0 => 'foo', 1 => 'bar' } })
+                                                   .to_h { |key, value| [key.to_s.upcase, value.to_s.upcase] })
           end
         end
       end

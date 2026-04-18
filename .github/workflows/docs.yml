@@ -36,7 +36,7 @@ jobs:
           HORO_PROJECT_VERSION: '@${{ github.sha }}'
           HORO_BADGE_VERSION: main
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: 'doc/'
 
